@@ -8,11 +8,10 @@ const schemaNewTransaction = Joi.object({
   description: Joi.string().min(3).required(),
 });
 
-export async function newRevenue(req, res) {
-  const { value, description } = req.body;
+export async function newTransaction(req, res) {
+  const { value, description, type } = req.body;
   const { authorization } = req.headers;
   const date = dayjs().format("DD/MM/YYYY");
-  const type = "revenue";
 
   const valueNumber = Number(value).toFixed(2).trim();
 
@@ -43,7 +42,7 @@ export async function newRevenue(req, res) {
       value: valueNumber,
       type,
     });
-    res.status(201).send("New revenue created with success");
+    res.status(201).send("New transaction created with success");
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -67,4 +66,8 @@ export async function getTransactions(req, res) {
   } catch (err) {
     console.log(err);
   }
+}
+
+export async function newExpense(req, res){
+
 }

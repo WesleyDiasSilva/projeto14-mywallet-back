@@ -3,7 +3,7 @@ import cors from "cors";
 import { openServerDatabase } from "./database/connection.js";
 import { newUser, login } from "./controllers/userController.js";
 import {
-  newRevenue,
+  newTransaction,
   getTransactions,
 } from "./controllers/transactionController.js";
 
@@ -27,7 +27,7 @@ app.post("/sign-up", newUser);
 app.post("/sign-in", login);
 
 //Route transactions
-app.post("/revenue", newRevenue);
+app.post("/transaction", newTransaction);
 app.get("/transaction", getTransactions);
 
 const port = 5000;
