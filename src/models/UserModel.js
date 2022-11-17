@@ -24,7 +24,11 @@ export const userModel = {
   },
 
   updateOne: async (userId, updateDocument) => {
-    connectionUser.updateOne({_id: new ObjectId(userId)}, {$set: updateDocument})
+    try{
+      await connectionUser.updateOne({_id: new ObjectId(userId)}, {$set: updateDocument})
+    }catch(err){
+      console.log(err)
+    } 
   }
 };
 

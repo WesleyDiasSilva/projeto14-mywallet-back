@@ -10,6 +10,7 @@ const schemaNewUser = Joi.object({
   confirmPassword: Joi.string().min(6).required(),
 });
 
+
 export async function newUser(req, res) {
   const { name, email, password, confirmPassword } = req.body;
   const validation = schemaNewUser.validate(
@@ -17,9 +18,15 @@ export async function newUser(req, res) {
     { abortEarly: false }
   );
 
+
   if (validation.error) {
     const errors = validation.error.details.map((err) => err.message);
     res.status(406).send(errors);
+    return;
+  }
+
+  if(password !== confirmPassword){
+    res.status(400).send("The password must be equal to password confirmation");
     return;
   }
 
@@ -68,3 +75,5 @@ export async function login(req, res) {
     return;
   }
 }
+
+

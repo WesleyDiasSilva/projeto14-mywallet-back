@@ -8,7 +8,7 @@ export async function openServerDatabase() {
 
   try {
     await database.connect();
-    console.log("Banco de dados conectado!");
+    console.log("Database conected!");
     return database.db("mywallet");
   } catch (err) {
     console.log(err);
