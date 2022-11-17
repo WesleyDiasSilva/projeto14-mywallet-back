@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { openServerDatabase } from "./database/connection.js";
+import {newUser} from './controllers/userController.js'
 
 let connection;
 try{
@@ -16,5 +17,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.post('/', newUser)
 
 app.listen(5000, () => console.log("Server rodando!"));
