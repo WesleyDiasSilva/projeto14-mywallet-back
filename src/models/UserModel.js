@@ -4,8 +4,8 @@ import { connectionUser } from "../server.js";
 export const userModel = {
   insertOne: async (obj) => {
     try {
-      const result = await connectionUser.insertOne( obj );
-      
+      const result = await connectionUser.insertOne(obj);
+
       return { result };
     } catch (err) {
       console.log(err);
@@ -14,22 +14,24 @@ export const userModel = {
   },
 
   findOne: async (obj) => {
-    try{
-      const result = await connectionUser.findOne(obj);
+    try {
+      const result = await connectionUser.findOne({ token: obj.token });
+      delete result?.hash;
       return result;
-    } catch(err){
+    } catch (err) {
       console.log(err);
-      return { status: false };
+      return { status: false, objeto: obj };
     }
   },
 
   updateOne: async (userId, updateDocument) => {
-    try{
-      await connectionUser.updateOne({_id: new ObjectId(userId)}, {$set: updateDocument})
-    }catch(err){
-      console.log(err)
-    } 
-  }
+    try {
+      await connectionUser.updateOne(
+        { _id: new ObjectId(userId) },
+        { $set: updateDocument }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
-
-

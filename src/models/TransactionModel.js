@@ -16,9 +16,11 @@ export const transactionModel = {
       console.log(err);
     }
   },
-  getAllTransaction: async () => {
+  getAllTransaction: async (email) => {
     try {
-      const transactions = await connectionTransaction.find({}).toArray();
+      const transactions = await connectionTransaction
+        .find({ email })
+        .toArray();
       return transactions;
     } catch (err) {
       console.log(err);

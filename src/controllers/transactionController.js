@@ -13,7 +13,7 @@ export async function newRevenue(req, res) {
   const { authorization } = req.headers;
   const date = dayjs().format("DD/MM/YYYY");
   const type = "revenue";
-  
+
   const valueNumber = Number(value).toFixed(2).trim();
 
   const validation = schemaNewTransaction.validate(
@@ -43,7 +43,7 @@ export async function newRevenue(req, res) {
       value: valueNumber,
       type,
     });
-    res.status(201).send("New revenue created with success")
+    res.status(201).send("New revenue created with success");
   } catch (err) {
     console.log(err);
     res.status(500);
@@ -51,3 +51,20 @@ export async function newRevenue(req, res) {
   }
 }
 
+export async function getTransactions(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization.replace("Bearer", "");
+
+  try {
+    const user = await userModel.findOne({ token: token });
+    console.log(user);
+    if (!user) {
+      res.status(401).send("Invalid Token!");
+      return;
+    }
+    const transactions = await transactionModel.getAllTransaction(user.email);
+    res.status(200).send(transactions);
+  } catch (err) {
+    console.log(err);
+  }
+}
