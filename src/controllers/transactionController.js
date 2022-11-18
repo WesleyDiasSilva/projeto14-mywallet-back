@@ -6,7 +6,7 @@ import { userModel } from "../models/UserModel.js";
 export async function newTransaction(req, res) {
   const date = dayjs().format("DD/MM/YYYY");
   const user = req.userAuth;
-  const { description, value, type } = req.newTransaction;
+  const { description, value, type } = req.transaction;
   try {
     await transactionModel.insertOne({
       date,
@@ -41,5 +41,34 @@ export async function getTransactions(req, res) {
     res.status(200).send(transactions);
   } catch (err) {
     console.log(err);
+    res.status(500).send();
+  }
+}
+
+export async function updateTransactions(req, res) {
+  const { value, description, type } = req.transaction;
+  const { id } = req.params;
+
+  try {
+    const result = await transactionModel.updateOne(id, {
+      value,
+      description,
+      type,
+    });
+    res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send();
+  }
+}
+
+export async function deleteTransactions(req, res) {
+  const { id } = req.params;
+  try {
+    const result = await transactionModel.deleteOne(id);
+    res.status(200).send(result);
+    return { status: true, result };
+  } catch (err) {
+    res.status(500).send();
   }
 }

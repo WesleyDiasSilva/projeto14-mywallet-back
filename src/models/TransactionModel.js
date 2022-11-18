@@ -11,9 +11,10 @@ export const transactionModel = {
         value: obj.value,
         type: obj.type,
       });
-      return result;
+      return { status: true, result };
     } catch (err) {
       console.log(err);
+      return { status: false };
     }
   },
   getAllTransaction: async (email) => {
@@ -31,9 +32,33 @@ export const transactionModel = {
       const result = await connectionTransaction.deleteOne({
         _id: new ObjectId(id),
       });
-      return result;
+      return { status: true, result };
     } catch (err) {
       console.log(err);
+      return { status: false };
+    }
+  },
+  findOne: async (id) => {
+    try {
+      const result = await connectionTransaction.findOne({
+        _id: new ObjectId(id),
+      });
+      return { status: true, result };
+    } catch (err) {
+      console.log(err);
+      return { status: false };
+    }
+  },
+  updateOne: async (id, updateDocument) => {
+    try {
+      const result = await connectionTransaction.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updateDocument }
+      );
+      return { status: true, result };
+    } catch (err) {
+      console.log(err);
+      return { status: false };
     }
   },
 };

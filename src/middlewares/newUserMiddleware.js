@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export function validateSchemaNewUser(req, res, next) {
+export function newUserMiddleware(req, res, next) {
   const schemaNewUser = Joi.object({
     name: Joi.string().min(3).trim().required(),
     email: Joi.string().email().required(),
