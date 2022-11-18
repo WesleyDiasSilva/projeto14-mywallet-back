@@ -1,11 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { openServerDatabase } from "./database/connection.js";
-import { newUser, login } from "./controllers/userController.js";
-import {
-  newTransaction,
-  getTransactions,
-} from "./controllers/transactionController.js";
+import routeAuth from "./routes/authRoutes.js";
+import routeTransactions from "./routes/transactionsRoutes.js";
 
 let connection;
 try {
@@ -13,7 +10,6 @@ try {
 } catch (erro) {
   console.log(erro, "Error in database!");
 }
-
 export const connectionUser = connection.collection("users");
 export const connectionTransaction = connection.collection("transaction");
 
@@ -21,14 +17,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-//Route users
-app.post("/sign-up", newUser);
-app.post("/sign-in", login);
-
-//Route transactions
-app.post("/transaction", newTransaction);
-app.get("/transaction", getTransactions);
+app.use(routeAuth);
+app.use(routeTransactions);
 
 const port = 5000;
 app.listen(port, () =>

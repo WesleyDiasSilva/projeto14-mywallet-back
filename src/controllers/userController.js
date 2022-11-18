@@ -3,44 +3,25 @@ import { userModel } from "../models/UserModel.js";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
 
-const schemaNewUser = Joi.object({
-  name: Joi.string().min(3).trim().required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  confirmPassword: Joi.string().min(6).required(),
-});
-
-
 export async function newUser(req, res) {
-  const { name, email, password, confirmPassword } = req.body;
-  const validation = schemaNewUser.validate(
-    { name, email, password, confirmPassword },
-    { abortEarly: false }
-  );
-
-
-  if (validation.error) {
-    const errors = validation.error.details.map((err) => err.message);
-    res.status(406).send(errors);
-    return;
-  }
-
-  if(password !== confirmPassword){
-    res.status(400).send("The password must be equal to password confirmation");
-    return;
-  }
-
+  const { name, email, password } = req.newUser;
   try {
-    const emailExist = await userModel.findOne({ email });
+    const emailExist = await userModel.findOneEmail({
+      email: email.toLowerCase(),
+    });
 
     if (emailExist) {
-      res.send("Invalid e-mail ");
+      res.status(401).send("Invalid e-mail ");
       return;
     }
 
     const hash = bcrypt.hashSync(password, 10);
-    const result = await userModel.insertOne({ name, email, hash });
-    const user = {name}
+    const result = await userModel.insertOne({
+      name,
+      email: email.toLowerCase(),
+      hash,
+    });
+    const user = { name };
     res.status(201).send({ result, status: true, user });
   } catch (err) {
     console.log(err);
@@ -53,16 +34,16 @@ export async function login(req, res) {
   const { email, password } = req.body;
 
   try {
-    const result = await userModel.findOne({ email });
+    const result = await userModel.findOneEmail({ email: email.toLowerCase() });
     if (result) {
       const hashIsValid = bcrypt.compareSync(password, result.hash);
       if (hashIsValid) {
         const token = uuid();
-        await userModel.updateOne(result._id, {token});
-        res.send({user: result.name, token});
+        await userModel.updateOne(result._id, { token });
+        res.send({ user: result.name, token: "Bearer " + token });
         return;
       } else {
-        res.send("Invalid Password!");
+        res.status(401).send("Invalid Password!");
         return;
       }
     } else {
@@ -75,5 +56,3 @@ export async function login(req, res) {
     return;
   }
 }
-
-

@@ -13,10 +13,19 @@ export const userModel = {
     }
   },
 
-  findOne: async (obj) => {
+  findOneToken: async ({ token }) => {
     try {
-      const result = await connectionUser.findOne({ token: obj.token });
-      delete result?.hash;
+      const result = await connectionUser.findOne({ token: token });
+      return result;
+    } catch (err) {
+      console.log(err);
+      return { status: false, objeto: obj };
+    }
+  },
+
+  findOneEmail: async (obj) => {
+    try {
+      const result = await connectionUser.findOne({ email: obj.email });
       return result;
     } catch (err) {
       console.log(err);
