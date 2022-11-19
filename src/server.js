@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(routeAuth);
 app.use(routeTransactions);
 
-const port = 5000;
-app.listen(port, () =>
-  console.log(`Server running in http://localhost:${port}`)
+
+app.listen(process.env.PORT, () =>
+  console.log(`Server running in http://localhost:${process.env.PORT}`)
 );
