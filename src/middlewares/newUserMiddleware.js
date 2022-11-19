@@ -6,13 +6,15 @@ export function newUserMiddleware(req, res, next) {
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().min(6).required(),
+    image: Joi.string().min(6),
   });
 
-  const { name, email, password, confirmPassword } = req.body;
+  const { name, email, password, confirmPassword, image } = req.body;
   const validation = schemaNewUser.validate(
-    { name, email, password, confirmPassword },
+    { name, email, password, confirmPassword, image },
     { abortEarly: false }
   );
+  console.log(image);
 
   if (validation.error) {
     const errors = validation.error.details.map((err) => err.message);
@@ -25,6 +27,6 @@ export function newUserMiddleware(req, res, next) {
     return;
   }
 
-  req.newUser = { name, email, password, confirmPassword };
+  req.newUser = { name, email, password, confirmPassword, image };
   next();
 }

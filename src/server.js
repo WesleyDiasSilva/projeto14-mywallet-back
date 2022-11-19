@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { openServerDatabase } from "./database/connection.js";
-import routeAuth from "./routes/authRoutes.js";
+import routeAuth from "./routes/userRoutes.js";
 import routeTransactions from "./routes/transactionsRoutes.js";
 
 let connection;

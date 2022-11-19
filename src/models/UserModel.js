@@ -35,10 +35,12 @@ export const userModel = {
 
   updateOne: async (userId, updateDocument) => {
     try {
-      await connectionUser.updateOne(
+      const result = await connectionUser.updateOne(
         { _id: new ObjectId(userId) },
         { $set: updateDocument }
       );
+      console.log(result);
+      return result;
     } catch (err) {
       console.log(err);
     }
