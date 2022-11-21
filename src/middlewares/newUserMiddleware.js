@@ -6,7 +6,7 @@ export function newUserMiddleware(req, res, next) {
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
     confirmPassword: Joi.string().min(6).required(),
-    image: Joi.string().min(6),
+    image: Joi.string(),
   });
 
   const { name, email, password, confirmPassword, image } = req.body;
@@ -14,7 +14,6 @@ export function newUserMiddleware(req, res, next) {
     { name, email, password, confirmPassword, image },
     { abortEarly: false }
   );
-  console.log(image);
 
   if (validation.error) {
     const errors = validation.error.details.map((err) => err.message);

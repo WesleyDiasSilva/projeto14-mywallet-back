@@ -17,7 +17,6 @@ export async function newTransaction(req, res) {
     });
     res.status(201).send("New transaction created with success");
   } catch (err) {
-    console.log(err);
     res.status(500);
     return;
   }
@@ -40,7 +39,6 @@ export async function getTransactions(req, res) {
     const transactions = await transactionModel.getAllTransaction(user.email);
     res.status(200).send(transactions);
   } catch (err) {
-    console.log(err);
     res.status(500).send();
   }
 }
@@ -57,7 +55,6 @@ export async function updateTransactions(req, res) {
     });
     res.status(200).send(result);
   } catch (err) {
-    console.log(err);
     res.status(500).send();
   }
 }
@@ -71,4 +68,16 @@ export async function deleteTransactions(req, res) {
   } catch (err) {
     res.status(500).send();
   }
+}
+
+export async function newTransactionTeste(req, res) {
+  const { value, description, type } = req.body;
+  const result = await transactionModel.insertOne({
+    email: "wesley@gmail.com",
+    date: "21/11/2022",
+    value,
+    description,
+    type,
+  });
+  res.send(result);
 }

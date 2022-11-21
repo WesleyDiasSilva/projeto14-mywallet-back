@@ -15,8 +15,6 @@ export async function authUser(req, res, next) {
     }
     delete tokenIsValid.hash;
     req.userAuth = tokenIsValid;
-  } catch (err) {
-    console.log(err);
-  }
+  } catch (err) {}
   next();
 }

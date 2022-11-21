@@ -8,8 +8,7 @@ export const userModel = {
 
       return { result };
     } catch (err) {
-      console.log(err);
-      return { status: false };
+      return { status: false, erro: err };
     }
   },
 
@@ -18,7 +17,6 @@ export const userModel = {
       const result = await connectionUser.findOne({ token: token });
       return result;
     } catch (err) {
-      console.log(err);
       return { status: false, objeto: obj };
     }
   },
@@ -28,8 +26,7 @@ export const userModel = {
       const result = await connectionUser.findOne({ email: obj.email });
       return result;
     } catch (err) {
-      console.log(err);
-      return { status: false, objeto: obj };
+      return { status: false, objeto: obj, erro: err };
     }
   },
 
@@ -39,10 +36,7 @@ export const userModel = {
         { _id: new ObjectId(userId) },
         { $set: updateDocument }
       );
-      console.log(result);
       return result;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   },
 };

@@ -13,7 +13,6 @@ export const transactionModel = {
       });
       return { status: true, result };
     } catch (err) {
-      console.log(err);
       return { status: false };
     }
   },
@@ -23,9 +22,7 @@ export const transactionModel = {
         .find({ email })
         .toArray();
       return transactions;
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   },
   deleteOne: async (id) => {
     try {
@@ -34,7 +31,6 @@ export const transactionModel = {
       });
       return { status: true, result };
     } catch (err) {
-      console.log(err);
       return { status: false };
     }
   },
@@ -45,7 +41,6 @@ export const transactionModel = {
       });
       return { status: true, result };
     } catch (err) {
-      console.log(err);
       return { status: false };
     }
   },
@@ -57,7 +52,6 @@ export const transactionModel = {
       );
       return { status: true, result };
     } catch (err) {
-      console.log(err);
       return { status: false };
     }
   },

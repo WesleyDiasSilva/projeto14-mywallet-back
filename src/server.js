@@ -7,8 +7,8 @@ import routeTransactions from "./routes/transactionsRoutes.js";
 let connection;
 try {
   connection = await openServerDatabase();
-} catch (erro) {
-  console.log(erro, "Error in database!");
+} catch (err) {
+  connection = err;
 }
 export const connectionUser = connection.collection("users");
 export const connectionTransaction = connection.collection("transaction");
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(routeAuth);
 app.use(routeTransactions);
 
-
-app.listen(process.env.PORT, () =>
-  console.log(`Server running in http://localhost:${process.env.PORT}`)
+const port = process.env.PORT || 5000;
+app.listen(port, () =>
+  console.log(`Server running in http://localhost:${port}`)
 );

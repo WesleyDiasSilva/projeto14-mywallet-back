@@ -1,4 +1,3 @@
-import Joi from "joi";
 import { userModel } from "../models/UserModel.js";
 import { v4 as uuid } from "uuid";
 import bcrypt from "bcrypt";
@@ -9,7 +8,6 @@ export async function newUser(req, res) {
     const emailExist = await userModel.findOneEmail({
       email: email.toLowerCase(),
     });
-
     if (emailExist) {
       res.status(401).send("Invalid e-mail ");
       return;
@@ -25,7 +23,6 @@ export async function newUser(req, res) {
     const user = { name, image };
     res.status(201).send({ result, status: true, user });
   } catch (err) {
-    console.log(err);
     res.status(500).send({ result, status: false });
     return;
   }
@@ -56,7 +53,6 @@ export async function login(req, res) {
       return;
     }
   } catch (err) {
-    console.log(err);
     res.status(500);
     return;
   }
@@ -68,7 +64,6 @@ export async function updateUser(req, res) {
 
   try {
     const result = await userModel.updateOne(user._id, updateDocument);
-    console.log(result);
     res.status(200).send(result);
   } catch (err) {
     res.sendStatus(500);
